@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Form Validation Practice</title>
-    <link rel="stylesheet" href="src/styles.css" />
+    <link rel="stylesheet" href="styles.css" />
     <!-- Font Awesome for Icons -->
     <script
       src="https://kit.fontawesome.com/d8f052c6cf.js"
@@ -27,12 +27,14 @@
           <span class="input-icon"><i class="fa-solid fa-envelope"></i></span
           ><br />
 
-          <input name="password" type="text" placeholder="Password" />
+          <!-- Password input changed to type="password" -->
+          <input name="password" type="password" placeholder="Password" />
           <span class="input-icon"><i class="fa-solid fa-key"></i></span><br />
 
+          <!-- Repeat Password input changed to type="password" -->
           <input
             name="passwordCheck"
-            type="text"
+            type="password"
             placeholder="Repeat Password"
           />
           <span class="input-icon"><i class="fa-solid fa-key"></i></span
@@ -58,8 +60,14 @@
           <input name="username" type="text" placeholder="Username" />
           <span class="input-icon"><i class="fa-solid fa-user"></i></span><br />
 
-          <input name="password" type="text" placeholder="Password" />
-          <span class="input-icon"><i class="fa-solid fa-key"></i></span
+          <!-- Password input changed to type="password" -->
+          <input name="password" type="password" placeholder="Password" />
+          <input
+            name="passwordCheck"
+            type="password"
+            placeholder="Repeat Password"
+          />
+
           ><br /><br />
 
           <div class="flex-row">

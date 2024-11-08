@@ -34,10 +34,75 @@ function validateUsername(username) {
 }
 // Email validation
 function validateEmail(email) {
-    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const isInvalidDomain = email.toLowerCase().includes("@example.com");
-  
-    if (!isEmail) return "The email must be a valid email address.";
-    if (isInvalidDomain) return "The email must not be from the domain 'example.com'.";
-    
-    return null;
+  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const isInvalidDomain = email.toLowerCase().includes("@example.com");
+
+  if (!isEmail) return "The email must be a valid email address.";
+  if (isInvalidDomain)
+    return "The email must not be from the domain 'example.com'.";
+
+  return null;
+}
+
+// Password validation
+function validatePassword(password, username) {
+  const minLength = password.length >= 12;
+  const hasUpper = /[A-Z]/.test(password);
+  const hasLower = /[a-z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecial = /[!@#$%^&*]/.test(password);
+  const noForbiddenWords =
+    !password.toLowerCase().includes("password") &&
+    !password.includes(username);
+
+  if (!minLength) return "Password must be at least 12 characters long.";
+  if (!hasUpper) return "Password must contain at least one uppercase letter.";
+  if (!hasLower) return "Password must contain at least one lowercase letter.";
+  if (!hasNumber) return "Password must contain at least one number.";
+  if (!hasSpecial)
+    return "Password must contain at least one special character.";
+  if (!noForbiddenWords)
+    return "Password cannot contain the word 'password' or the username.";
+
+  return null;
+}
+
+// Handle form submission
+registrationForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  hideError();
+
+  const username = registrationForm.elements["username"].value;
+  const email = registrationForm.elements["email"].value;
+  const password = registrationForm.elements["password"].value;
+  const passwordCheck = registrationForm.elements["passwordCheck"].value;
+  const termsAccepted = registrationForm.elements["terms"].checked;
+
+  // Validate each field
+  let errorMessage = validateUsername(username);
+  if (errorMessage) return showError(errorMessage);
+
+  errorMessage = validateEmail(email);
+  if (errorMessage) return showError(errorMessage);
+
+  errorMessage = validatePassword(password, username);
+  if (errorMessage) return showError(errorMessage);
+
+  if (password !== passwordCheck) {
+    return showError("Both passwords must match.");
+  }
+
+  if (!termsAccepted) {
+    return showError("The terms and conditions must be accepted.");
+  }
+
+  // Save to localStorage
+  const users = JSON.parse(localStorage.getItem("users") || "{}");
+  users[username.toLowerCase()] = { email: email.toLowerCase(), password };
+  localStorage.setItem("users", JSON.stringify(users));
+
+  // Success
+  alert("Registration successful!");
+  registrationForm.reset();
+  hideError();
+});
